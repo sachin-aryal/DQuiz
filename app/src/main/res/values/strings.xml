@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">DQuiz</string>
+    <string name="facebook_app_id">1810192859253965</string>
+    <string name="fb_login_protocol_scheme">fb1810192859253965</string>
+    <string name="development_key_hash">v8q2H+wId6WSDNFi1EJdHu1Mue4=</string>
+    <string name="release_key_alias">dquiz</string>
+    <string name="production_key_hash">FZADFpNEjWFfcFfefFkFqt/Fwho=</string>
+    <string name="alias_gmail">androiddebugkey</string>
+    <string name="gmail_sha1_key">BF:CA:B6:1F:EC:08:77:A5:92:0C:D1:62:D4:42:5D:1E:ED:4C:B9:EE</string>
+    <string name="btn_logout_from_google">Logout from Google</string>
+    <string name="btn_revoke_access">Revoke Access</string>
+</resources>

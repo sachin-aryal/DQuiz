@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "328331920759",
+    "project_id": "firebase-dquiz"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328331920759:android:22f8f97c333119e7",
+        "android_client_info": {
+          "package_name": "org.sss.dquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328331920759-m0m7s09ubvrof978dqkg6pd51m2a9v7j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.sss.dquiz",
+            "certificate_hash": "BFCAB61FEC0877A5920CD162D4425D1EED4CB9EE"
+          }
+        },
+        {
+          "client_id": "328331920759-q09ua8nng1cdj0i9h4e1kd5d6dofnn1d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjogzVxZhpWMoN7w3xFWPB12H4XkI9M5o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

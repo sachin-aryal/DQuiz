@@ -12,5 +12,7 @@ public class DquizConstants {
     public final static String USERID = "userId";
     public final static String NAME = "name";
     public final static String CURRENTPROGRESS = "currentProgress";
+    public final static String REST_BASE_URL = "localhost/dquiz/api/";
+
 
 }

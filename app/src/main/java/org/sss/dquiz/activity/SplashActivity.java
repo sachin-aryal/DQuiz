@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_splash);
-        sharedPreferences = getSharedPreferences(DquizConstants.MyPREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(DquizConstants.MYPREFERENCES, Context.MODE_PRIVATE);
         new Handler().postDelayed(new Runnable() {
 
             @Override

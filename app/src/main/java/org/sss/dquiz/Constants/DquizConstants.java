@@ -7,8 +7,10 @@ import android.app.Application;
  */
 
 public class DquizConstants {
-    public static String MyPREFERENCES = "DquizSP";
-    public static String loginType = "loginType";
-    public static String userId = "userId";
-    public static String name = "name";
+    public final static String MYPREFERENCES = "DquizSP";
+    public final static String LOGINTYPE = "loginType";
+    public final static String USERID = "userId";
+    public final static String NAME = "name";
+    public final static String CURRENTPROGRESS = "currentProgress";
+
 }

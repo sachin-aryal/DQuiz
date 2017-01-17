@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 import org.sss.dquiz.Constants.DquizConstants;
 import org.sss.dquiz.R;
+import org.sss.dquiz.database.DbObject;
 import org.sss.dquiz.helper.HelperService;
 
 public class SplashActivity extends AppCompatActivity {
@@ -29,6 +30,11 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_splash);
+
+
+        DbObject dbObject = new DbObject(getApplicationContext());
+//        HelperService.sqlLiteInfo(dbObject.getWritableDatabase());
+
         sharedPreferences = getSharedPreferences(DquizConstants.MYPREFERENCES, Context.MODE_PRIVATE);
         new Handler().postDelayed(new Runnable() {
 

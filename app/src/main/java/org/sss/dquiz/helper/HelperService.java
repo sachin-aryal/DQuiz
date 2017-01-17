@@ -3,6 +3,8 @@ package org.sss.dquiz.helper;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -113,6 +115,25 @@ public class HelperService {
 
     }
 
+
+    public static void sqlLiteInfo(SQLiteDatabase database){
+        Cursor c = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+        if (c.moveToFirst()) {
+            while ( !c.isAfterLast() ) {
+                String tableName  = c.getString( c.getColumnIndex("name"));
+                System.out.println("Table Name=> "+tableName);
+                Cursor dbCursor = database.query(tableName, null, null, null, null, null, null);
+                String[] columnNames = dbCursor.getColumnNames();
+                System.out.println("All Columns in "+tableName);
+                for(String col:columnNames){
+                    System.out.println("Column: "+col);
+                }
+                c.moveToNext();
+            }
+        }
+        c.close();
+    }
 
 
 

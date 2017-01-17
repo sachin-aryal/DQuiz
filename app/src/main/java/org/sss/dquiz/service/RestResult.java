@@ -16,7 +16,7 @@ public class RestResult extends JsonHttpResponseHandler {
 
     @Override
     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-        result = response;
+        this.result = response;
     }
 
     @Override

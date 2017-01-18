@@ -104,14 +104,14 @@ public class HelperService {
 
     public static void setCurrentUserInfo(String loginType,String userId,String userName){
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(DquizConstants.LOGINTYPE, loginType);
-        editor.putString(DquizConstants.USERID, userId);
-        editor.putString(DquizConstants.NAME, userName);
+        editor.putString(User.LOGINTYPE, loginType);
+        editor.putString(User.USERID, userId);
+        editor.putString(User.NAME, userName);
         editor.apply();
     }
 
     public static User getUser(SharedPreferences sharedPreferences){
-        return new User(sharedPreferences.getString(DquizConstants.USERID,null), sharedPreferences.getString(DquizConstants.NAME,null));
+        return new User(sharedPreferences.getString(User.USERID,null), sharedPreferences.getString(User.NAME,null));
 
     }
 

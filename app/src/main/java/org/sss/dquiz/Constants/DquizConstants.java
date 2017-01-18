@@ -8,11 +8,10 @@ import android.app.Application;
 
 public class DquizConstants {
     public final static String MYPREFERENCES = "DquizSP";
-    public final static String LOGINTYPE = "loginType";
-    public final static String USERID = "userId";
-    public final static String NAME = "name";
     public final static String CURRENTPROGRESS = "currentProgress";
     public final static String REST_BASE_URL = "localhost/dquiz/api/";
+    public final static String ISREGISTER = "isRegister";
+
 
 
 }

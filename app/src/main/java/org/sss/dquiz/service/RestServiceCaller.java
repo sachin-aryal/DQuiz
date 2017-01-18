@@ -12,7 +12,7 @@ import org.sss.dquiz.Constants.DquizRestURL;
  * Created by iam on 1/14/17.
  */
 
-public class RestService {
+public class RestServiceCaller {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

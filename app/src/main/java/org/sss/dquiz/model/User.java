@@ -7,6 +7,10 @@ package org.sss.dquiz.model;
 public class User {
 
 
+    public final static String LOGINTYPE = "loginType";
+    public final static String USERID = "userId";
+    public final static String NAME = "name";
+
     private String userId;
     private String name;
 

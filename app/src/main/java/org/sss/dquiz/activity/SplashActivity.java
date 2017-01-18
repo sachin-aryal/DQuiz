@@ -19,6 +19,7 @@ import org.sss.dquiz.Constants.DquizConstants;
 import org.sss.dquiz.R;
 import org.sss.dquiz.database.DbObject;
 import org.sss.dquiz.helper.HelperService;
+import org.sss.dquiz.service.UserService;
 
 public class SplashActivity extends AppCompatActivity {
     private AccessTokenTracker accessTokenTracker = null;
@@ -45,6 +46,9 @@ public class SplashActivity extends AppCompatActivity {
 
                     Profile profile = Profile.getCurrentProfile();
                     HelperService.setCurrentUserInfo(profile,sharedPreferences);
+                    if(!sharedPreferences.contains(DquizConstants.ISREGISTER)){
+                        UserService.registerNewUser(sharedPreferences);
+                    }
                     Intent intent = new Intent(SplashActivity.this,MainActivity.class);
                     startActivity(intent);
 
@@ -53,7 +57,9 @@ public class SplashActivity extends AppCompatActivity {
                     if (googleSignInResult.isSuccess()) {
                         GoogleSignInAccount acct = googleSignInResult.getSignInAccount();
                         HelperService.setCurrentUserInfo(acct,sharedPreferences);
-
+                        if(!sharedPreferences.contains(DquizConstants.ISREGISTER)){
+                            UserService.registerNewUser(sharedPreferences);
+                        }
                         Intent intent = new Intent(SplashActivity.this,MainActivity.class);
                         startActivity(intent);
                     } else {

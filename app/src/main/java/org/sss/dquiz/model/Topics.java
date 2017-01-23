@@ -10,7 +10,7 @@ public class Topics {
     public static final String TOPIC_VAL = "topic_val";
     public static final String SUPER_TOPIC_VAL = "super_topic_val";
     public static final String DESCRIPTION = "description";
-    public static final String TOPIC_TABLE = "topic";
+    public static final String TOPIC_TABLE = "topics";
 
     int topicId;
     String topicVal;

@@ -33,7 +33,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
 
-        DbObject dbObject = new DbObject(getApplicationContext());
+        final DbObject dbObject = new DbObject(getApplicationContext());
 //        HelperService.sqlLiteInfo(dbObject.getWritableDatabase());
 
         sharedPreferences = getSharedPreferences(DquizConstants.MYPREFERENCES, Context.MODE_PRIVATE);
@@ -45,9 +45,13 @@ public class SplashActivity extends AppCompatActivity {
                 if(HelperService.isFBLoggedIn()){
 
                     Profile profile = Profile.getCurrentProfile();
+                    if(profile == null){
+                        Intent intent = new Intent(SplashActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                    }
                     HelperService.setCurrentUserInfo(profile,sharedPreferences);
                     if(!sharedPreferences.contains(DquizConstants.ISREGISTER)){
-                        UserService.registerNewUser(sharedPreferences);
+                        new RetrieveContentTask(sharedPreferences,UserService.REGISTER_ACTION,dbObject.getWritableDatabase()).execute();
                     }
                     Intent intent = new Intent(SplashActivity.this,MainActivity.class);
                     startActivity(intent);
@@ -56,9 +60,13 @@ public class SplashActivity extends AppCompatActivity {
                     GoogleSignInResult googleSignInResult = HelperService.getGoogleSignInResult();
                     if (googleSignInResult.isSuccess()) {
                         GoogleSignInAccount acct = googleSignInResult.getSignInAccount();
+                        if(acct == null){
+                            Intent intent = new Intent(SplashActivity.this,LoginActivity.class);
+                            startActivity(intent);
+                        }
                         HelperService.setCurrentUserInfo(acct,sharedPreferences);
                         if(!sharedPreferences.contains(DquizConstants.ISREGISTER)){
-                            UserService.registerNewUser(sharedPreferences);
+                            new RetrieveContentTask(sharedPreferences,UserService.REGISTER_ACTION,dbObject.getWritableDatabase()).execute();
                         }
                         Intent intent = new Intent(SplashActivity.this,MainActivity.class);
                         startActivity(intent);

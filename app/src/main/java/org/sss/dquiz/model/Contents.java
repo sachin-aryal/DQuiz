@@ -6,10 +6,11 @@ package org.sss.dquiz.model;
 
 public class Contents {
 
+    public static final String ID = "id";
     public static final String CONTENT_ID = "content_id";
     public static final String SLIDE_NUMBER = "slide_no";
     public static final String CONTENT_TYPE = "content_type";
-    public static final String CONTENT_DESCRIPTION = "content_description";
+    public static final String CONTENT_DESCRIPTION = "content_desc";
     public static final String CONTENTS_TABLE = "contents";
 
 
@@ -61,7 +62,8 @@ public class Contents {
 
     public static String getContentsTableQuery(){
         return "CREATE TABLE "+CONTENTS_TABLE+"( " +
-                ""+CONTENT_ID+" INTEGER PRIMARY KEY NOT NULL," +
+                ""+ID+" INTEGER PRIMARY KEY NOT NULL," +
+                ""+CONTENT_ID+" INTEGER NOT NULL," +
                 ""+Topics.TOPIC_ID+" INTEGER NOT NULL," +
                 ""+SLIDE_NUMBER+" TEXT," +
                 ""+CONTENT_TYPE+" TEXT," +

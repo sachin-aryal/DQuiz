@@ -14,8 +14,13 @@ public class RestResult extends JsonHttpResponseHandler {
 
     private JSONObject result = null;
 
+    public RestResult(){
+        result = new JSONObject();
+    }
+
     @Override
     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+        System.out.println("rest result received.........................................."+response);
         this.result = response;
     }
 
@@ -25,6 +30,6 @@ public class RestResult extends JsonHttpResponseHandler {
     }
 
     public JSONObject getResult(){
-        return result;
+        return this.result;
     }
 }

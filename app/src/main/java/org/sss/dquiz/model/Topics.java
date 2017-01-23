@@ -9,6 +9,7 @@ public class Topics {
     public static final String TOPIC_ID = "topic_id";
     public static final String TOPIC_VAL = "topic_val";
     public static final String SUPER_TOPIC_VAL = "super_topic_val";
+    public static final String DESCRIPTION = "description";
     public static final String TOPIC_TABLE = "topic";
 
     int topicId;
@@ -49,7 +50,8 @@ public class Topics {
         return "CREATE TABLE "+TOPIC_TABLE+"( " +
                 ""+TOPIC_ID+" INTEGER PRIMARY KEY NOT NULL," +
                 ""+TOPIC_VAL+" TEXT," +
-                ""+SUPER_TOPIC_VAL+" TEXT);";
+                ""+SUPER_TOPIC_VAL+" TEXT," +
+                ""+DESCRIPTION+" TEXT);";
     }
 
     public static String getTopicDropQuery(){

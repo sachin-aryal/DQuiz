@@ -7,10 +7,9 @@ package org.sss.dquiz.Constants;
 public enum DquizRestURL {
 
     CHAPTERS("fetchChapters/","GET"),
-    REGISTER("register/","POST");
+    REGISTER("register","POST");
 
     private String url;
-
     private String method;
 
     DquizRestURL(String url, String method) {

@@ -32,7 +32,7 @@ public class TopicAdapter extends ArrayAdapter<Topics> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.topic_list_view, parent, false);
         }
         Button button = (Button) convertView.findViewById(R.id.topicName);
-        button.setText(topics.getTopic_val());
+        button.setText(topics.getSuperTopicVal());
         return convertView;
     }
 }

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.sss.dquiz.Constants.DquizConstants;
 import org.sss.dquiz.R;
@@ -41,11 +42,19 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 topicService = new TopicService();
                 ListView listView = (ListView) findViewById(R.id.topicList);
-                ArrayList topicList = topicService.getTopicList(dbObject);
-                TopicAdapter topicAdapter= new TopicAdapter(topicList,getApplicationContext());
-                listView.setAdapter(topicAdapter);
-                listView.setDividerHeight(4);
-                //TODO: Hide Progress Bar
+                ArrayList topicList = topicService.getUniqueBySuperVal(dbObject);
+
+                if(topicList.size() != 0) {
+                    TopicAdapter topicAdapter = new TopicAdapter(topicList, getApplicationContext());
+                    listView.setAdapter(topicAdapter);
+                    listView.setDividerHeight(4);
+                    //TODO: Hide Progress Bar
+                }else{
+                    System.out.println(topicList.size());
+                    HelperService.makeAlertBox("No Data Received.","No Data Received From Server. Reconnecting....",MainActivity.this);
+                    Intent intent = new Intent(MainActivity.this,SplashActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

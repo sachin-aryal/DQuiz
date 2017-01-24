@@ -15,6 +15,22 @@ public class Topics {
     int topicId;
     String topicVal;
     String superTopicVal;
+    String description;
+
+    public Topics(int topicId, String topicVal, String superTopicVal, String description) {
+        this.topicId = topicId;
+        this.topicVal = topicVal;
+        this.superTopicVal = superTopicVal;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public int getTopicId() {
         return topicId;
@@ -37,12 +53,6 @@ public class Topics {
     }
 
     public void setSuperTopicVal(String superTopicVal) {
-        this.superTopicVal = superTopicVal;
-    }
-
-    public Topics(int topicId, String topicVal, String superTopicVal) {
-        this.topicId = topicId;
-        this.topicVal = topicVal;
         this.superTopicVal = superTopicVal;
     }
 

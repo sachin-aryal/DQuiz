@@ -43,14 +43,12 @@ public class MainActivity extends AppCompatActivity {
                 topicService = new TopicService();
                 ListView listView = (ListView) findViewById(R.id.topicList);
                 ArrayList topicList = topicService.getUniqueBySuperVal(dbObject);
-
+                //TODO: Hide Progress Bar
                 if(topicList.size() != 0) {
                     TopicAdapter topicAdapter = new TopicAdapter(topicList, getApplicationContext());
                     listView.setAdapter(topicAdapter);
                     listView.setDividerHeight(4);
-                    //TODO: Hide Progress Bar
                 }else{
-                    System.out.println(topicList.size());
                     HelperService.makeAlertBox("No Data Received.","No Data Received From Server. Reconnecting....",MainActivity.this);
                     Intent intent = new Intent(MainActivity.this,SplashActivity.class);
                     startActivity(intent);

@@ -1,6 +1,8 @@
 package org.sss.dquiz.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +20,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.sss.dquiz.Constants.DquizConstants;
 import org.sss.dquiz.R;
+import org.sss.dquiz.database.DbObject;
 import org.sss.dquiz.helper.HelperService;
 
 public class LoginActivity extends AppCompatActivity {
@@ -28,15 +32,18 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 007;
     SignInButton btnSignIn = null;
     LoginButton mFacebookLoginButton = null;
+    SharedPreferences sharedPreferences = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_login);
-
+        sharedPreferences = getSharedPreferences(DquizConstants.MYPREFERENCES, Context.MODE_PRIVATE);
         LoginActivity.this.runOnUiThread(new Runnable() {
             public void run() {
+                sharedPreferences.edit().clear().apply();
+                DbObject.DATABASE_VERSION = DbObject.DATABASE_VERSION+1;
                 fbSignInManager();
                 gmailSignInManager();
             }

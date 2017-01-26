@@ -19,8 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
-
-import org.sss.dquiz.Constants.DquizConstants;
 import org.sss.dquiz.model.User;
 
 /**

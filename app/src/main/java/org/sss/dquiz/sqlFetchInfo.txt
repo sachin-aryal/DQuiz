@@ -2,4 +2,4 @@ adb shell
 cd data/data/org.sss.dquiz/database
 sqlite3 database.db
 In the sqlite> prompt, type .tables. This will give you all the tables in the database.db file.
-select * from table1;
+select * from table1;e

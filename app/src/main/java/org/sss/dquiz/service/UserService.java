@@ -53,13 +53,13 @@ public class UserService {
                                 JSONObject allData = (JSONObject) insideValue.get(topicId);
 
                                 JSONArray topics = (JSONArray) allData.get("topics");
-                                insertTopics(topics);
+                                TopicService.insertTopics(topics,sqLiteDatabase);
                                 JSONArray contents = (JSONArray) allData.get("contents");
-                                insertContent(contents);
+                                ContentService.insertContent(contents,sqLiteDatabase);
                                 JSONArray questions = (JSONArray) allData.get("questions");
-                                insertQuestion(questions);
+                                QuestionService.insertQuestion(questions,sqLiteDatabase);
                                 JSONObject answers = (JSONObject) allData.get("answers");
-                                insertAnswers(answers);
+                                AnswerService.insertAnswers(answers,sqLiteDatabase);
 
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putBoolean(DquizConstants.ISREGISTER,true);
@@ -74,63 +74,6 @@ public class UserService {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void insertTopics(JSONArray contents) throws JSONException {
-        for (int i = 0; i < contents.length(); i++) {
-            JSONObject topicRow = contents.getJSONObject(i);
-            String insertTopicQuery = "INSERT INTO "+Topics.TOPIC_TABLE+" ("
-                    +Topics.TOPIC_ID+", "+Topics.TOPIC_VAL+", "
-                    +Topics.SUPER_TOPIC_VAL+", "+Topics.DESCRIPTION+" ) VALUES ("
-                    +topicRow.getInt(Topics.TOPIC_ID)+",'"+topicRow.getString(Topics.TOPIC_VAL)+"', '"
-                    +topicRow.getString(Topics.SUPER_TOPIC_VAL)+"', '"+topicRow.getString(Topics.DESCRIPTION)+"' )";
-            sqLiteDatabase.execSQL(insertTopicQuery);
-        }
-    }
-
-    public static void insertContent(JSONArray contents) throws JSONException {
-        for(int i=0;i<contents.length();i++){
-            JSONObject contentRow = contents.getJSONObject(i);
-            String insertContentQuery = "INSERT INTO "+ Contents.CONTENTS_TABLE + " ("
-                    +Contents.ID+", "+Contents.CONTENT_ID+", "
-                    +Topics.TOPIC_ID+", "+Contents.SLIDE_NUMBER+", "
-                    +Contents.CONTENT_TYPE+", "+Contents.CONTENT_DESCRIPTION+" ) VALUES ("
-                    +contentRow.getInt(Contents.ID)+", "+contentRow.getInt(Contents.CONTENT_ID)+", "
-                    +contentRow.getInt(Topics.TOPIC_ID)+", "+contentRow.getInt(Contents.SLIDE_NUMBER)+", '"
-                    +contentRow.getString(Contents.CONTENT_TYPE)+"', '"+contentRow.getString(Contents.CONTENT_DESCRIPTION)+"' )";
-            sqLiteDatabase.execSQL(insertContentQuery);
-        }
-    }
-
-    public static void insertQuestion(JSONArray questions) throws JSONException {
-        for(int i=0;i<questions.length();i++){
-            JSONObject questionRow = questions.getJSONObject(i);
-            String insertQuestionQuery = "INSERT INTO "+ Questions.QUESTION_TABLE+" ("
-                    +Questions.QUESTION_ID+", "+Topics.TOPIC_ID+", "
-                    +Questions.QUESTION_VAL+", "+Questions.QUESTION_AUGMENT+", "
-                    +Questions.HINT+", "+Questions.DIFFICULTY+" ) VALUES ("
-                    +questionRow.getInt(Questions.QUESTION_ID)+", "+questionRow.getInt(Topics.TOPIC_ID)+", '"
-                    +questionRow.getString(Questions.QUESTION_VAL)+"', '"+questionRow.getString(Questions.QUESTION_AUGMENT)+"', '"
-                    +questionRow.getString(Questions.HINT)+"', '"+Questions.DIFFICULTY+"' )";
-            sqLiteDatabase.execSQL(insertQuestionQuery);
-        }
-    }
-
-    public static void insertAnswers(JSONObject answers) throws JSONException {
-        Iterator<String> keys = answers.keys();
-        while (keys.hasNext()){
-            String key = keys.next();
-            JSONArray questionAnswers = answers.getJSONArray(key);
-            for (int i=0;i<questionAnswers.length();i++){
-                JSONObject questionAnswer = questionAnswers.getJSONObject(i);
-                String insertAnswerQuery = "INSERT INTO "+ Answers.ANSWERS_TABLE+" ("
-                        +Answers.ANSWER_ID+", "+Questions.QUESTION_ID+", "
-                        +Answers.ANSWER_VAL+", "+Answers.IS_CORRECT+") VALUES ("
-                        +questionAnswer.getInt(Answers.ANSWER_ID)+", "+questionAnswer.getInt(Questions.QUESTION_ID)+", '"
-                        +questionAnswer.getString(Answers.ANSWER_VAL)+"', '"+questionAnswer.getInt(Answers.IS_CORRECT)+"' )";
-                sqLiteDatabase.execSQL(insertAnswerQuery);
-            }
         }
     }
 }

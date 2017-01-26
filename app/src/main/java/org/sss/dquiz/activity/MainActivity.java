@@ -1,6 +1,5 @@
 package org.sss.dquiz.activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,19 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.sss.dquiz.Constants.DquizConstants;
 import org.sss.dquiz.R;
-import org.sss.dquiz.adapter.TopicAdapter;
+import org.sss.dquiz.adapter.SuperTopicsAdapter;
 import org.sss.dquiz.database.DbObject;
 import org.sss.dquiz.helper.HelperService;
-import org.sss.dquiz.model.User;
 import org.sss.dquiz.service.TopicService;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,9 +39,10 @@ public class MainActivity extends AppCompatActivity {
                 ListView listView = (ListView) findViewById(R.id.topicList);
                 ArrayList topicList = topicService.getUniqueBySuperVal(dbObject);
                 //TODO: Hide Progress Bar
+                // TODO: Deactivate all the topic that are not unlocked.
                 if(topicList.size() != 0) {
-                    TopicAdapter topicAdapter = new TopicAdapter(topicList, getApplicationContext());
-                    listView.setAdapter(topicAdapter);
+                    final SuperTopicsAdapter superTopicsAdapter = new SuperTopicsAdapter(topicList, getApplicationContext());
+                    listView.setAdapter(superTopicsAdapter);
                     listView.setDividerHeight(4);
                 }else{
                     HelperService.makeAlertBox("No Data Received.","No Data Received From Server. Reconnecting....",MainActivity.this);
@@ -55,5 +51,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void viewDescription(String superTopicVal){
+        Intent intent = new Intent(MainActivity.this,TopicsActivity.class);
+        intent.putExtra("superTopicVal",superTopicVal);
+        startActivity(intent);
     }
 }

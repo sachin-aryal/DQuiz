@@ -21,10 +21,9 @@ public class TopicService {
         String topicQuery = "SELECT *FROM "+Topics.TOPIC_TABLE;
         Cursor cursor = sqLiteDatabase.rawQuery(topicQuery, null);
 
-        ArrayList<Topics> topicList = null;
+        ArrayList<Topics> topicList = new ArrayList<Topics>();
         if (cursor != null) {
             cursor.moveToFirst();
-            topicList = new ArrayList<Topics>();
             if (cursor.moveToFirst()) {
                 do {
                     int topicId = cursor.getInt(cursor.getColumnIndex(Topics.TOPIC_ID));
@@ -45,10 +44,9 @@ public class TopicService {
         String topicQuery = "SELECT distinct("+Topics.SUPER_TOPIC_VAL+") FROM "+Topics.TOPIC_TABLE;
         Cursor cursor = sqLiteDatabase.rawQuery(topicQuery, null);
 
-        ArrayList<Topics> topicList = null;
+        ArrayList<Topics> topicList = new ArrayList<Topics>();
         if (cursor != null) {
             cursor.moveToFirst();
-            topicList = new ArrayList<Topics>();
             if (cursor.moveToFirst()) {
                 do {
                     String superTopicVal = cursor.getString(cursor.getColumnIndex(Topics.SUPER_TOPIC_VAL));
@@ -72,5 +70,27 @@ public class TopicService {
                     +topicRow.getString(Topics.SUPER_TOPIC_VAL)+"', '"+topicRow.getString(Topics.DESCRIPTION)+"' )";
             sqLiteDatabase.execSQL(insertTopicQuery);
         }
+    }
+
+    public ArrayList<Topics> getTopicListBySuperTopic(String superTopicVal,SQLiteDatabase sqLiteDatabase){
+        ArrayList<Topics> topicList = null;
+        String topicBySuperTopic = "SELECT "+Topics.TOPIC_VAL+","+Topics.DESCRIPTION+" FROM "+Topics.TOPIC_TABLE+" WHERE "
+                +Topics.SUPER_TOPIC_VAL+"='"+superTopicVal+"'";
+        Cursor cursor = sqLiteDatabase.rawQuery(topicBySuperTopic,null);
+
+        if (cursor != null) {
+            topicList = new ArrayList<>();
+            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                do {
+                    String topicVal = cursor.getString(cursor.getColumnIndex(Topics.SUPER_TOPIC_VAL));
+                    String description = cursor.getString(cursor.getColumnIndex(Topics.DESCRIPTION));
+                    Topics topics = new Topics(0,topicVal,null,description);
+                    topicList.add(topics);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return topicList;
     }
 }

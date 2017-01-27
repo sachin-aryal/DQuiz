@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ListView;
 
 import org.sss.dquiz.R;
+import org.sss.dquiz.adapter.TopicsAdapter;
 import org.sss.dquiz.database.DbObject;
 import org.sss.dquiz.model.Topics;
 import org.sss.dquiz.service.TopicService;
@@ -28,6 +30,10 @@ public class TopicsActivity extends AppCompatActivity {
             @Override
             public void run() {
                 ArrayList<Topics> topicList = topicService.getTopicListBySuperTopic(superTopicVal,sqLiteDatabase);
+                TopicsAdapter topicsAdapter = new TopicsAdapter(topicList,getApplicationContext());
+                ListView topicInfoList = (ListView) findViewById(R.id.topicInfoList);
+                topicInfoList.setAdapter(topicsAdapter);
+                topicInfoList.setDividerHeight(4);
             }
         });
     }

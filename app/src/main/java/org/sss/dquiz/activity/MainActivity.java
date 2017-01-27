@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences = null;
     DbObject mydb;
     TopicService topicService = null;
+    private static Context mainContext = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         mydb = new DbObject(this);
         //TODO: Add Progress Bar
         sharedPreferences = getSharedPreferences(DquizConstants.MYPREFERENCES, Context.MODE_PRIVATE);
-
+        mainContext = this;
         final SQLiteDatabase dbObject = new DbObject(this.getApplicationContext()).getWritableDatabase();
         MainActivity.this.runOnUiThread(new Runnable() {
             @Override
@@ -53,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void viewDescription(String superTopicVal){
-        Intent intent = new Intent(MainActivity.this,TopicsActivity.class);
+    public static void viewDescription(String superTopicVal){
+        Intent intent = new Intent(mainContext,TopicsActivity.class);
         intent.putExtra("superTopicVal",superTopicVal);
-        startActivity(intent);
+        mainContext.startActivity(intent);
     }
 }

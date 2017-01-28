@@ -1,5 +1,6 @@
 package org.sss.dquiz.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -15,13 +16,17 @@ import org.sss.dquiz.service.TopicService;
 import java.util.ArrayList;
 
 public class TopicsActivity extends AppCompatActivity {
+
     TopicService topicService = null;
     SQLiteDatabase sqLiteDatabase = null;
+    private static Context mainContext = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topics);
 
+        mainContext = this;
         topicService = new TopicService();
         sqLiteDatabase = new DbObject(this.getApplicationContext()).getWritableDatabase();
         Intent intent = getIntent();
@@ -36,5 +41,12 @@ public class TopicsActivity extends AppCompatActivity {
                 topicInfoList.setDividerHeight(4);
             }
         });
+    }
+
+    public static void viewContent(int topicId,String topicVal){
+        Intent intent = new Intent(mainContext,ContentActivity.class);
+        intent.putExtra("topicId",topicId);
+        intent.putExtra("topicVal",topicVal);
+        mainContext.startActivity(intent);
     }
 }

@@ -10,9 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.sss.dquiz.R;
-import org.sss.dquiz.activity.MainActivity;
+import org.sss.dquiz.activity.TopicsActivity;
 import org.sss.dquiz.model.Topics;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -34,9 +33,17 @@ public class TopicsAdapter extends ArrayAdapter<Topics> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.topicinfo_list_view, parent, false);
         }
 
+        TextView topicId = (TextView) convertView.findViewById(R.id.topicId);
+        topicId.setText(topics.getTopicId()+"");
+
         TextView topicVal = (TextView) convertView.findViewById(R.id.topicVal);
         topicVal.setText(topics.getTopic_val());
-        System.out.println(topics.getTopic_val());
+        topicVal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TopicsActivity.viewContent(topics.getTopicId(),topics.getTopic_val());
+            }
+        });
         TextView topicDescription = (TextView) convertView.findViewById(R.id.topicDescription);
         topicDescription.setText(topics.getDescription());
         return convertView;

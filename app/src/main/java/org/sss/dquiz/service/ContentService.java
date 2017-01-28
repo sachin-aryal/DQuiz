@@ -1,5 +1,6 @@
 package org.sss.dquiz.service;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.json.JSONArray;
@@ -25,5 +26,27 @@ public class ContentService {
                     +contentRow.getString(Contents.CONTENT_TYPE)+"', '"+contentRow.getString(Contents.CONTENT_DESCRIPTION)+"' )";
             sqLiteDatabase.execSQL(insertContentQuery);
         }
+    }
+
+    public Contents getContents(int topicId,int slideNumber,SQLiteDatabase sqLiteDatabase){
+        Contents contents = null;
+
+        String contentQuery = "SELECT "+Contents.CONTENT_TYPE+","+Contents.CONTENT_DESCRIPTION+" FROM "+Contents.CONTENTS_TABLE+" WHERE "+Topics.TOPIC_ID+"="+topicId+" AND "
+                +Contents.SLIDE_NUMBER+"="+slideNumber;
+
+        Cursor cursor = sqLiteDatabase.rawQuery(contentQuery,null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                do {
+                    String contentType = cursor.getString(cursor.getColumnIndex(Contents.CONTENT_TYPE));
+                    String contentDescription = cursor.getString(cursor.getColumnIndex(Contents.CONTENT_DESCRIPTION));
+                    contents = new Contents(0,slideNumber,contentType,contentDescription);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return contents;
     }
 }

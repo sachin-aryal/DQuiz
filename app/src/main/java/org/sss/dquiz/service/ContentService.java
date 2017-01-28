@@ -37,7 +37,6 @@ public class ContentService {
         Cursor cursor = sqLiteDatabase.rawQuery(contentQuery,null);
 
         if (cursor != null) {
-            cursor.moveToFirst();
             if (cursor.moveToFirst()) {
                 do {
                     String contentType = cursor.getString(cursor.getColumnIndex(Contents.CONTENT_TYPE));

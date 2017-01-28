@@ -24,7 +24,6 @@ public class TopicService {
 
         ArrayList<Topics> topicList = new ArrayList<Topics>();
         if (cursor != null) {
-            cursor.moveToFirst();
             if (cursor.moveToFirst()) {
                 do {
                     int topicId = cursor.getInt(cursor.getColumnIndex(Topics.TOPIC_ID));
@@ -49,7 +48,6 @@ public class TopicService {
 
         ArrayList<Topics> topicList = new ArrayList<Topics>();
         if (cursor != null) {
-            cursor.moveToFirst();
             if (cursor.moveToFirst()) {
                 do {
                     String superTopicVal = cursor.getString(cursor.getColumnIndex(Topics.SUPER_TOPIC_VAL));
@@ -83,7 +81,6 @@ public class TopicService {
 
         if (cursor != null) {
             topicList = new ArrayList<>();
-            cursor.moveToFirst();
             if (cursor.moveToFirst()) {
                 do {
                     int topicId = cursor.getInt(cursor.getColumnIndex(Topics.TOPIC_ID));

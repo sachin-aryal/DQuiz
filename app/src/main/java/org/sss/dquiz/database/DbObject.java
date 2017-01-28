@@ -16,7 +16,7 @@ import org.sss.dquiz.model.Topics;
 public class DbObject extends SQLiteOpenHelper{
 
     public static final String DATABASE_NAME = "dquiz";
-    public static int DATABASE_VERSION = 2;
+    public static int DATABASE_VERSION = 4;
 
     public DbObject(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

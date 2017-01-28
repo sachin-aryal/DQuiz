@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         LoginActivity.this.runOnUiThread(new Runnable() {
             public void run() {
                 sharedPreferences.edit().clear().apply();
-                DbObject.DATABASE_VERSION = DbObject.DATABASE_VERSION+1;
+//                DbObject.DATABASE_VERSION = DbObject.DATABASE_VERSION+1;
                 fbSignInManager();
                 gmailSignInManager();
             }

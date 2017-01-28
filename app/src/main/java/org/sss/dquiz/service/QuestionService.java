@@ -1,5 +1,6 @@
 package org.sss.dquiz.service;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.json.JSONArray;
@@ -26,5 +27,25 @@ public class QuestionService {
                     +questionRow.getString(Questions.HINT)+"', '"+Questions.DIFFICULTY+"' )";
             sqLiteDatabase.execSQL(insertQuestionQuery);
         }
+    }
+
+    public Questions getQuestion(int questionId,SQLiteDatabase sqLiteDatabase){
+        String questionQuery = "SELECT *FROM "+Questions.QUESTION_TABLE+" WHERE "+Questions.QUESTION_ID+"="+questionId;
+        Cursor cursor = sqLiteDatabase.rawQuery(questionQuery,null);
+        Questions questions = null;
+
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                do {
+                    String  questionVal = cursor.getString(cursor.getColumnIndex(Questions.QUESTION_VAL));
+                    String  questionAugment = cursor.getString(cursor.getColumnIndex(Questions.QUESTION_AUGMENT));
+                    String  hint = cursor.getString(cursor.getColumnIndex(Questions.HINT));
+                    String  difficulty = cursor.getString(cursor.getColumnIndex(Questions.DIFFICULTY));
+                    questions = new Questions(questionId,questionVal,questionAugment,hint,difficulty);
+                }while (cursor.moveToNext());
+            }
+        }
+
+        return questions;
     }
 }

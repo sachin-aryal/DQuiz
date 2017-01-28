@@ -36,7 +36,7 @@ public class SuperTopicsAdapter extends ArrayAdapter<Topics> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new MainActivity().viewDescription(topics.getSuperTopicVal());
+                MainActivity.viewDescription(topics.getSuperTopicVal());
             }
         });
         return convertView;

@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences = null;
     DbObject mydb;
     TopicService topicService = null;
+    private static Context mainContext = null;
     ProgressBar progress;
 
     @Override
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         progress = (ProgressBar) findViewById(R.id.progressBar);
         progress.setVisibility(View.VISIBLE);
         sharedPreferences = getSharedPreferences(DquizConstants.MYPREFERENCES, Context.MODE_PRIVATE);
-
+        mainContext = this;
         final SQLiteDatabase dbObject = new DbObject(this.getApplicationContext()).getWritableDatabase();
         MainActivity.this.runOnUiThread(new Runnable() {
             @Override
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 topicService = new TopicService();
                 ListView listView = (ListView) findViewById(R.id.topicList);
                 ArrayList topicList = topicService.getUniqueBySuperVal(dbObject);
-                progress.setVisibility(View.INVISIBLE);                                                                                                                                                                                                                                                                         
+                progress.setVisibility(View.INVISIBLE);
                 // TODO: Deactivate all the topic that are not unlocked.
                 if(topicList.size() != 0) {
                     final SuperTopicsAdapter superTopicsAdapter = new SuperTopicsAdapter(topicList, getApplicationContext());
@@ -57,9 +58,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void viewDescription(String superTopicVal){
-        Intent intent = new Intent(MainActivity.this,TopicsActivity.class);
+    public static void viewDescription(String superTopicVal){
+        Intent intent = new Intent(mainContext,TopicsActivity.class);
         intent.putExtra("superTopicVal",superTopicVal);
-        startActivity(intent);
+        mainContext.startActivity(intent);
     }
 }

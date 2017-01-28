@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import org.sss.dquiz.Constants.DquizConstants;
 import org.sss.dquiz.R;
@@ -22,13 +24,15 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences = null;
     DbObject mydb;
     TopicService topicService = null;
+    ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mydb = new DbObject(this);
-        //TODO: Add Progress Bar
+        progress = (ProgressBar) findViewById(R.id.progressBar);
+        progress.setVisibility(View.VISIBLE);
         sharedPreferences = getSharedPreferences(DquizConstants.MYPREFERENCES, Context.MODE_PRIVATE);
 
         final SQLiteDatabase dbObject = new DbObject(this.getApplicationContext()).getWritableDatabase();
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 topicService = new TopicService();
                 ListView listView = (ListView) findViewById(R.id.topicList);
                 ArrayList topicList = topicService.getUniqueBySuperVal(dbObject);
-                //TODO: Hide Progress Bar
+                progress.setVisibility(View.INVISIBLE);                                                                                                                                                                                                                                                                         
                 // TODO: Deactivate all the topic that are not unlocked.
                 if(topicList.size() != 0) {
                     final SuperTopicsAdapter superTopicsAdapter = new SuperTopicsAdapter(topicList, getApplicationContext());

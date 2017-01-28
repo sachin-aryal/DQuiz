@@ -42,8 +42,10 @@ public class AnswerService {
         if(cursor != null){
             if(cursor.moveToFirst()){
                 do{
+                    int answerId = cursor.getInt(cursor.getColumnIndex(Answers.ANSWER_ID));
                     String answerVal =  cursor.getString(cursor.getColumnIndex(Answers.ANSWER_VAL));
-                    Answers answers = new Answers(0,answerVal,0);
+                    int isCorrect = cursor.getInt(cursor.getColumnIndex(Answers.IS_CORRECT));
+                    Answers answers = new Answers(answerId,answerVal,isCorrect);
                     answersList.add(answers);
                 }while (cursor.moveToNext());
             }

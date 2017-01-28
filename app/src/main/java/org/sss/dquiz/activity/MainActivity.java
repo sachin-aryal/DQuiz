@@ -43,15 +43,19 @@ public class MainActivity extends AppCompatActivity {
                 topicService = new TopicService();
                 ListView listView = (ListView) findViewById(R.id.topicList);
                 ArrayList topicList = topicService.getUniqueBySuperVal(dbObject);
-                progress.setVisibility(View.INVISIBLE);
-                // TODO: Deactivate all the topic that are not unlocked.
                 if(topicList.size() != 0) {
                     final SuperTopicsAdapter superTopicsAdapter = new SuperTopicsAdapter(topicList, getApplicationContext());
                     listView.setAdapter(superTopicsAdapter);
                     listView.setDividerHeight(4);
+                    progress.setVisibility(View.INVISIBLE);
                 }else{
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     HelperService.makeAlertBox("No Data Received.","No Data Received From Server. Reconnecting....",MainActivity.this);
-                    Intent intent = new Intent(MainActivity.this,SplashActivity.class);
+                    Intent intent = new Intent(MainActivity.this,MainActivity.class);
                     startActivity(intent);
                 }
             }

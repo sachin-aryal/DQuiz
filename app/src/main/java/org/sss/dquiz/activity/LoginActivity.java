@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -43,7 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         LoginActivity.this.runOnUiThread(new Runnable() {
             public void run() {
                 sharedPreferences.edit().clear().apply();
-//                DbObject.DATABASE_VERSION = DbObject.DATABASE_VERSION+1;
+                DbObject dbObject = new DbObject(LoginActivity.this.getApplicationContext());
+                dbObject.dropTables(dbObject.getWritableDatabase());
                 fbSignInManager();
                 gmailSignInManager();
             }

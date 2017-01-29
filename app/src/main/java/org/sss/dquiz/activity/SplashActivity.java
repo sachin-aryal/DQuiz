@@ -23,7 +23,7 @@ import org.sss.dquiz.service.UserService;
 
 public class SplashActivity extends AppCompatActivity {
     private AccessTokenTracker accessTokenTracker = null;
-    private static int SPLASH_TIME_OUT = 3000;
+    private static int SPLASH_TIME_OUT = 1500;
     SharedPreferences sharedPreferences = null;
 
     @Override

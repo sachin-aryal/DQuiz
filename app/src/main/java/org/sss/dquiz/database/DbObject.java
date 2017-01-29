@@ -41,4 +41,12 @@ public class DbObject extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL(Topics.getTopicDropQuery());
         onCreate(sqLiteDatabase);
     }
+
+    public void dropTables(SQLiteDatabase sqLiteDatabase){
+        sqLiteDatabase.execSQL(Answers.getAnswersDropQuery());
+        sqLiteDatabase.execSQL(Contents.getContentsDropQuery());
+        sqLiteDatabase.execSQL(Questions.getQuestionsDropQuery());
+        sqLiteDatabase.execSQL(Topics.getTopicDropQuery());
+        onCreate(sqLiteDatabase);
+    }
 }

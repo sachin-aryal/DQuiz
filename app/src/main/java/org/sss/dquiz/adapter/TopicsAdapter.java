@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.sss.dquiz.R;
@@ -33,12 +34,14 @@ public class TopicsAdapter extends ArrayAdapter<Topics> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.topicinfo_list_view, parent, false);
         }
 
+        RelativeLayout topicinfoList = (RelativeLayout) convertView.findViewById(R.id.topicinfoList);
+
         TextView topicId = (TextView) convertView.findViewById(R.id.topicId);
         topicId.setText(topics.getTopicId()+"");
 
         TextView topicVal = (TextView) convertView.findViewById(R.id.topicVal);
         topicVal.setText(topics.getTopic_val());
-        topicVal.setOnClickListener(new View.OnClickListener() {
+        topicinfoList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TopicsActivity.viewContent(topics.getTopicId(),topics.getTopic_val());

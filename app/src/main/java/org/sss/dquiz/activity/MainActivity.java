@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                         final SuperTopicsAdapter superTopicsAdapter = new SuperTopicsAdapter(topicList, getApplicationContext());
                         runOnUiThread("showData",superTopicsAdapter);
                         runOnUiThread("hideProgress",null);
-                        mainLayout.setGravity(Gravity.NO_GRAVITY);
                         retry[0] = false;
                     } else {
                         try {
@@ -116,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 }else if(actionName.equalsIgnoreCase("showData")){
                     listView.setAdapter(superTopicsAdapter);
                     listView.setDividerHeight(4);
+                    mainLayout.setGravity(Gravity.NO_GRAVITY);
                 }
             }
         });

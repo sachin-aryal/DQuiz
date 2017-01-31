@@ -1,6 +1,8 @@
 package org.sss.dquiz.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +15,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.sss.dquiz.Constants.DquizConstants;
 import org.sss.dquiz.R;
 import org.sss.dquiz.database.DbObject;
 import org.sss.dquiz.helper.HelperService;
@@ -34,10 +38,13 @@ public class ContentActivity extends AppCompatActivity {
     AnswerService answerService = null;
     SQLiteDatabase sqLiteDatabase = null;
     String topicTitle = "";
-    int topicId = 0,initialSlideNumber = 1;
+    int topicId = 0,slideNumber = 1;
     Button submitAnswer = null;
     EditText answerTextView = null;
     RadioGroup radioGroup = null;
+    TextView contentType = null;
+    SharedPreferences sharedPreferences = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +59,25 @@ public class ContentActivity extends AppCompatActivity {
         contentService = new ContentService();
         questionService = new QuestionService();
         answerService = new AnswerService();
+        sharedPreferences = getSharedPreferences(DquizConstants.MYPREFERENCES, Context.MODE_PRIVATE);
 
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_content);
         relativeLayout.setOnTouchListener(new OnSwipeTouchListener(ContentActivity.this){
             public void onSwipeRight() {
-                initialSlideNumber--;
-                if(initialSlideNumber > 0) {
+                slideNumber--;
+                if(slideNumber > 0) {
                     fetchContentsOnUiThread();
                 }
             }
             public void onSwipeLeft() {
-                initialSlideNumber++;
-                fetchContentsOnUiThread();
+                if(contentType.getText().equals("question")){
+                    if(checkTopicAndSlideNumber()){
+                        slideNumber++;
+                        fetchContentsOnUiThread();
+                    }else{
+                        HelperService.makeToast(ContentActivity.this,"Solve the question.", Toast.LENGTH_SHORT);
+                    }
+                }
             }
         });
         fetchContentsOnUiThread();
@@ -73,20 +87,32 @@ public class ContentActivity extends AppCompatActivity {
         ContentActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Contents contents = contentService.getContents(topicId, initialSlideNumber, sqLiteDatabase);
-                TextView topicVal = (TextView) findViewById(R.id.topicVal);
-                TextView topicDescription = (TextView) findViewById(R.id.topicDescription);
-                LinearLayout questionsLayout = (LinearLayout) findViewById(R.id.questionLayout);
-                if (contents != null) {
-                    topicVal.setText(topicTitle);
-                    if(contents.getContentType().equalsIgnoreCase("question")){
-                        questionsLayout.setVisibility(View.VISIBLE);
-                        topicDescription.setVisibility(View.GONE);
-                        questionsContent(contents);
-                    }else{
-                        topicDescription.setVisibility(View.VISIBLE);
-                        questionsLayout.setVisibility(View.GONE);
-                        topicDescription.setText(contents.getContentDescription());
+                if(topicId > sharedPreferences.getInt("topicId",0)) {
+                    HelperService.makeToast(ContentActivity.this,"Please complete the previous chapter.",Toast.LENGTH_SHORT);
+                }else {
+                    Contents contents = contentService.getContents(topicId, slideNumber, sqLiteDatabase);
+                    TextView topicVal = (TextView) findViewById(R.id.topicVal);
+                    TextView contentDescription = (TextView) findViewById(R.id.contentDescription);
+                    contentType  = (TextView) findViewById(R.id.contentType);
+                    LinearLayout questionsLayout = (LinearLayout) findViewById(R.id.questionLayout);
+                    if (contents != null) {
+                        topicVal.setText(topicTitle);
+                        contentType.setText(contents.getContentType());
+                        if(contents.getContentType().equalsIgnoreCase("question")){
+                            questionsLayout.setVisibility(View.VISIBLE);
+                            contentDescription.setVisibility(View.GONE);
+                            questionsContent(contents);
+                        }else{
+                            contentDescription.setVisibility(View.VISIBLE);
+                            questionsLayout.setVisibility(View.GONE);
+                            contentDescription.setText(contents.getContentDescription());
+                        }
+                        if(slideNumber > sharedPreferences.getInt("slideNo",0) && topicId >= sharedPreferences.getInt("topicId",0)){
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putInt("topicId",topicId);
+                            editor.putInt("slideNo",slideNumber);
+                            editor.apply();
+                        }
                     }
                 }
             }
@@ -178,6 +204,8 @@ public class ContentActivity extends AppCompatActivity {
     public void checkAnswerMultiple(String correctAnswer,String selectedAnswer){
         if(correctAnswer.equalsIgnoreCase(selectedAnswer)){
             HelperService.makeAlertBox("Correct","Right Answer",ContentActivity.this);
+            slideNumber++;
+            fetchContentsOnUiThread();
         }else{
             HelperService.makeAlertBox("Wrong","Wrong Answer",ContentActivity.this);
         }
@@ -189,5 +217,16 @@ public class ContentActivity extends AppCompatActivity {
         }else{
             HelperService.makeAlertBox("Wrong","Wrong Answer",ContentActivity.this);
         }
+    }
+
+    public boolean checkTopicAndSlideNumber(){
+
+        int topicIdS = sharedPreferences.getInt("topicId",0);
+        int slideNoS = sharedPreferences.getInt("slideNo",1);
+
+        if(topicIdS >= this.topicId && slideNoS > this.slideNumber){
+            return true;
+        }
+        return false;
     }
 }

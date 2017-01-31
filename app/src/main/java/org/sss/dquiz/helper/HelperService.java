@@ -71,6 +71,10 @@ public class HelperService {
                 }).show();
     }
 
+    public static void makeToast(Activity activity,String message,int length){
+        Toast.makeText(activity,message,length).show();
+    }
+
 
     public static boolean isFBLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();

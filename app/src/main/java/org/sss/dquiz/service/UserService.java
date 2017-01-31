@@ -62,8 +62,12 @@ public class UserService {
                                     JSONObject answers = (JSONObject) allData.get("answers");
                                     AnswerService.insertAnswers(answers, sqLiteDatabase);
 
+                                    JSONObject userStatus = (JSONObject) allData.get("userStatus");
+
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putBoolean(DquizConstants.ISREGISTER, true);
+                                    editor.putInt("slideNo",userStatus.getInt("slideNo"));
+                                    editor.putInt("topicId",userStatus.getInt("topicId"));
                                     editor.apply();
                                     System.out.println("Successfully Registered......");
                                 }

@@ -50,9 +50,14 @@
                 android:text="Topic Description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/topicDescription"
+                android:id="@+id/contentDescription"
                 android:textColor="#000000"
                 android:layout_below="@+id/questionLayout"/>
         </RelativeLayout>
     </ScrollView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contentType"
+        android:visibility="invisible"/>
 </RelativeLayout>

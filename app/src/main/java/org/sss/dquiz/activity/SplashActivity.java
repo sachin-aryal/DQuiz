@@ -49,12 +49,17 @@ public class SplashActivity extends AppCompatActivity {
                         Intent intent = new Intent(SplashActivity.this,LoginActivity.class);
                         startActivity(intent);
                     }
-                    HelperService.setCurrentUserInfo(profile,sharedPreferences);
-                    if(!sharedPreferences.contains(DquizConstants.ISREGISTER)){
-                        new RetrieveContentTask(sharedPreferences,UserService.REGISTER_ACTION,dbObject.getWritableDatabase()).execute();
+                    if(profile == null){
+                        Intent intent = new Intent(SplashActivity.this,SplashActivity.class);
+                        startActivity(intent);
+                    }else {
+                        HelperService.setCurrentUserInfo(profile, sharedPreferences);
+                        if (!sharedPreferences.contains(DquizConstants.ISREGISTER)) {
+                            new RetrieveContentTask(sharedPreferences, UserService.REGISTER_ACTION, dbObject.getWritableDatabase()).execute();
+                        }
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
-                    Intent intent = new Intent(SplashActivity.this,MainActivity.class);
-                    startActivity(intent);
 
                 }else if(HelperService.isGmailLoggedIn(SplashActivity.this)){
                     GoogleSignInResult googleSignInResult = HelperService.getGoogleSignInResult();

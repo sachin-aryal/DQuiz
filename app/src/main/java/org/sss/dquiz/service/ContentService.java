@@ -31,7 +31,7 @@ public class ContentService {
     public Contents getContents(int topicId,int slideNumber,SQLiteDatabase sqLiteDatabase){
         Contents contents = null;
 
-        String contentQuery = "SELECT "+Contents.CONTENT_TYPE+","+Contents.CONTENT_DESCRIPTION+" FROM "+Contents.CONTENTS_TABLE+" WHERE "+Topics.TOPIC_ID+"="+topicId+" AND "
+        String contentQuery = "SELECT *FROM "+Contents.CONTENTS_TABLE+" WHERE "+Topics.TOPIC_ID+"="+topicId+" AND "
                 +Contents.SLIDE_NUMBER+"="+slideNumber;
 
         Cursor cursor = sqLiteDatabase.rawQuery(contentQuery,null);

@@ -42,7 +42,10 @@ public class UserService {
             if(registerResult != null) {
                 if (registerResult.has("success")) {
                     if (registerResult.getBoolean("success")) {
+                        JSONArray topics = (JSONArray) registerResult.get("allTopics");
+                        TopicService.insertTopics(topics, sqLiteDatabase);
                         registerResult.remove("success");
+                        registerResult.remove("allTopics");
                         Iterator<String> iter = registerResult.keys();
                         while (iter.hasNext()) {
                             String key = iter.next();
@@ -53,8 +56,6 @@ public class UserService {
                                     String topicId = topicIds.next();
                                     JSONObject allData = (JSONObject) insideValue.get(topicId);
 
-                                    JSONArray topics = (JSONArray) allData.get("topics");
-                                    TopicService.insertTopics(topics, sqLiteDatabase);
                                     JSONArray contents = (JSONArray) allData.get("contents");
                                     ContentService.insertContent(contents, sqLiteDatabase);
                                     JSONArray questions = (JSONArray) allData.get("questions");

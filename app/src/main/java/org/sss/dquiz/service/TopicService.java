@@ -62,6 +62,7 @@ public class TopicService {
 
 
     public static void insertTopics(JSONArray contents,SQLiteDatabase sqLiteDatabase) throws JSONException {
+        //System.out.println("contents length ----"+contents.length());
         for (int i = 0; i < contents.length(); i++) {
             JSONObject topicRow = contents.getJSONObject(i);
             String insertTopicQuery = "INSERT INTO "+Topics.TOPIC_TABLE+" ("

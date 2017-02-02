@@ -39,7 +39,9 @@ public class RestServiceCaller {
     }
 
     public static void post(RequestParams params, RestResult restResult) {
+        //System.out.println("here ----------------- "+getAbsoluteUrl()   );
         client.post(getAbsoluteUrl(), params, restResult);
+        //System.out.println(restResult);
     }
 
     private static String getAbsoluteUrl() {

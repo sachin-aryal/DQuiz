@@ -26,7 +26,7 @@ public class RestResult extends JsonHttpResponseHandler {
 
     @Override
     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-
+        System.out.println("rest result received.........................................."+errorResponse);
     }
 
     public JSONObject getResult(){

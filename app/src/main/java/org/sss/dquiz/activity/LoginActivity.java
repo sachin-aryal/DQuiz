@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +40,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.hide();
+        }
+
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_login);
         sharedPreferences = getSharedPreferences(DquizConstants.MYPREFERENCES, Context.MODE_PRIVATE);
@@ -102,6 +110,13 @@ public class LoginActivity extends AppCompatActivity {
                 HelperService.makeAlertBox("Google Play Service Version Mismatch.",
                         "Please update your Google Play Service to Login with Gmail",LoginActivity.this);
                 btnSignIn.setEnabled(false);
+                btnSignIn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        HelperService.makeAlertBox("Google Play Service Version Mismatch.",
+                                "Please update your Google Play Service to Login with Gmail",LoginActivity.this);
+                    }
+                });
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

@@ -48,4 +48,20 @@ public class ContentService {
         }
         return contents;
     }
+
+    public int getMaxSlideNumber(int topicId,SQLiteDatabase sqLiteDatabase){
+        String maxSlideQuery = "SELECT MAX("+Contents.SLIDE_NUMBER+") FROM "+Contents.CONTENTS_TABLE+" WHERE "+
+                Topics.TOPIC_ID+" = "+topicId;
+        int maxSlideNo = 0;
+        Cursor cursor = sqLiteDatabase.rawQuery(maxSlideQuery,null);
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                do{
+                    maxSlideNo = cursor.getInt(cursor.getColumnIndex(Contents.SLIDE_NUMBER));
+                    return maxSlideNo;
+                }while (cursor.moveToNext());
+            }
+        }
+        return maxSlideNo;
+    }
 }

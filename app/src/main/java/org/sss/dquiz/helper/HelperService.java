@@ -96,19 +96,20 @@ public class HelperService {
 
     public static void setCurrentUserInfo(Profile profile, SharedPreferences sharedPreferences){
         HelperService.sharedPreferences = sharedPreferences;
-        setCurrentUserInfo("facebook",profile.getId(),profile.getName());
+        setCurrentUserInfo("facebook",profile.getId(),profile.getName(),"");
     }
 
     public static void setCurrentUserInfo(GoogleSignInAccount account,SharedPreferences sharedPreferences){
         HelperService.sharedPreferences = sharedPreferences;
-        setCurrentUserInfo("gmail",account.getId(),account.getDisplayName());
+        setCurrentUserInfo("gmail",account.getId(),account.getDisplayName(),account.getEmail());
     }
 
-    public static void setCurrentUserInfo(String loginType,String userId,String userName){
+    public static void setCurrentUserInfo(String loginType,String userId,String userName,String email){
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(User.LOGINTYPE, loginType);
         editor.putString(User.USERID, userId);
         editor.putString(User.NAME, userName);
+        editor.putString(User.EMAIL,email);
         editor.apply();
     }
 

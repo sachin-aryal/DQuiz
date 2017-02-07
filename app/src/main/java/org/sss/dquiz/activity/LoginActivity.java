@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -70,8 +71,9 @@ public class LoginActivity extends AppCompatActivity {
         mFacebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                mFacebookLoginButton.setVisibility(View.INVISIBLE);
-                btnSignIn.setVisibility(View.INVISIBLE);
+                mFacebookLoginButton.setVisibility(View.GONE);
+                btnSignIn.setVisibility(View.GONE);
+                findViewById(R.id.or).setVisibility(View.GONE);
                 Intent intent = new Intent(LoginActivity.this,SplashActivity.class);
                 startActivity(intent);
             }

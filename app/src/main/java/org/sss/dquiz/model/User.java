@@ -10,6 +10,7 @@ public class User {
     public final static String LOGINTYPE = "loginType";
     public final static String USERID = "userId";
     public final static String NAME = "name";
+    public final static String EMAIL = "userEmail";
 
     private String userId;
     private String name;

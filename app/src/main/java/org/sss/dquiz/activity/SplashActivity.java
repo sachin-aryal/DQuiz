@@ -24,7 +24,7 @@ import org.sss.dquiz.service.UserService;
 
 public class SplashActivity extends AppCompatActivity {
     private AccessTokenTracker accessTokenTracker = null;
-    private static int SPLASH_TIME_OUT = 1500;
+    private static int SPLASH_TIME_OUT = 1000;
     SharedPreferences sharedPreferences = null;
 
     @Override
@@ -32,12 +32,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_splash);
-
-
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.hide();
-        }
 
         final DbObject dbObject = new DbObject(getApplicationContext());
 //        HelperService.sqlLiteInfo(dbObject.getWritableDatabase());

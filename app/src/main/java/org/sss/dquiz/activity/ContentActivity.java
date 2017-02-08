@@ -87,32 +87,29 @@ public class ContentActivity extends AppCompatActivity {
         ContentActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(topicId > sharedPreferences.getInt("topicId",0)) {
-                    HelperService.makeToast(ContentActivity.this,"Please complete the previous chapter.",Toast.LENGTH_SHORT);
-                }else {
-                    Contents contents = contentService.getContents(topicId, slideNumber, sqLiteDatabase);
-                    TextView topicVal = (TextView) findViewById(R.id.topicVal);
-                    TextView contentDescription = (TextView) findViewById(R.id.contentDescription);
-                    contentType  = (TextView) findViewById(R.id.contentType);
-                    LinearLayout questionsLayout = (LinearLayout) findViewById(R.id.questionLayout);
-                    if (contents != null) {
-                        topicVal.setText(topicTitle);
-                        contentType.setText(contents.getContentType());
-                        if(contents.getContentType().equalsIgnoreCase("question")){
-                            questionsLayout.setVisibility(View.VISIBLE);
-                            contentDescription.setVisibility(View.GONE);
-                            questionsContent(contents);
-                        }else{
-                            contentDescription.setVisibility(View.VISIBLE);
-                            questionsLayout.setVisibility(View.GONE);
-                            contentDescription.setText(contents.getContentDescription());
-                        }
-                        if(slideNumber > sharedPreferences.getInt("slideNo",0) && topicId >= sharedPreferences.getInt("topicId",0)){
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putInt("topicId",topicId);
-                            editor.putInt("slideNo",slideNumber);
-                            editor.apply();
-                        }
+
+                Contents contents = contentService.getContents(topicId, slideNumber, sqLiteDatabase);
+                TextView topicVal = (TextView) findViewById(R.id.topicVal);
+                TextView contentDescription = (TextView) findViewById(R.id.contentDescription);
+                contentType  = (TextView) findViewById(R.id.contentType);
+                LinearLayout questionsLayout = (LinearLayout) findViewById(R.id.questionLayout);
+                if (contents != null) {
+                    topicVal.setText(topicTitle);
+                    contentType.setText(contents.getContentType());
+                    if(contents.getContentType().equalsIgnoreCase("question")){
+                        questionsLayout.setVisibility(View.VISIBLE);
+                        contentDescription.setVisibility(View.GONE);
+                        questionsContent(contents);
+                    }else{
+                        contentDescription.setVisibility(View.VISIBLE);
+                        questionsLayout.setVisibility(View.GONE);
+                        contentDescription.setText(contents.getContentDescription());
+                    }
+                    if(slideNumber > sharedPreferences.getInt("slideNo",0) && topicId >= sharedPreferences.getInt("topicId",0)){
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt("topicId",topicId);
+                        editor.putInt("slideNo",slideNumber);
+                        editor.apply();
                     }
                 }
             }

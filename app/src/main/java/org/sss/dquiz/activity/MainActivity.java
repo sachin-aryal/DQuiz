@@ -33,7 +33,6 @@ import org.sss.dquiz.model.User;
 import org.sss.dquiz.service.TopicService;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -70,15 +69,9 @@ public class MainActivity extends AppCompatActivity
         dbObject = mydb.getWritableDatabase();
         topicService = new TopicService();
         listView = (ListView) findViewById(R.id.topicList);
-        MainActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                navigationDrawerSetUp();
-                displayUserProfile();
-                fetchData();
-            }
-        });
 
+        navigationDrawerSetUp();
+        fetchData();
     }
 
 
@@ -90,15 +83,15 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 while(retry[0]) {
-                    ArrayList<Topics> topicList = topicService.getUniqueBySuperVal(dbObject);
-                    if (topicList.size() != 0) {
-                        final SuperTopicsAdapter superTopicsAdapter = new SuperTopicsAdapter(topicList, getApplicationContext());
-                        runOnUiThread("showData",superTopicsAdapter,topicList);
-                        runOnUiThread("hideProgress",null,null);
+                    ArrayList<Topics> superTopicList = topicService.getUniqueBySuperVal(dbObject);
+                    if (superTopicList.size() != 0) {
+                        final SuperTopicsAdapter superTopicsAdapter = new SuperTopicsAdapter(superTopicList, getApplicationContext());
+                        runOnUiThread("showData",superTopicsAdapter);
+                        runOnUiThread("hideProgress",null);
                         retry[0] = false;
                     } else {
                         try {
-                            Thread.sleep(3000);
+                            Thread.sleep(4000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -108,8 +101,8 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                     if(retryCount[0] >= 5){
-                        runOnUiThread("hideProgress",null,null);
-                        runOnUiThread("noServerConnection",null,null);
+                        runOnUiThread("hideProgress",null);
+                        runOnUiThread("noServerConnection",null);
                     }
                 }
             }
@@ -117,10 +110,16 @@ public class MainActivity extends AppCompatActivity
         customThread.start();
     }
 
-    public static void viewDescription(String superTopicVal){
-        Intent intent = new Intent(mainContext,TopicsActivity.class);
-        intent.putExtra("superTopicVal",superTopicVal);
-        mainContext.startActivity(intent);
+    public static void viewDescription(final String superTopicVal){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(mainContext,TopicsActivity.class);
+                intent.putExtra("superTopicVal",superTopicVal);
+                mainContext.startActivity(intent);
+            }
+        }).start();
+
     }
 
     public void navigationDrawerSetUp(){
@@ -131,13 +130,16 @@ public class MainActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
+        layout_drawer.requestLayout();
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.bringToFront();
+        displayUserProfile();
     }
 
-    public void runOnUiThread(final String actionName, final SuperTopicsAdapter superTopicsAdapter,final List<Topics> topicList){
+    public void runOnUiThread(final String actionName, final SuperTopicsAdapter superTopicsAdapter){
         MainActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -149,11 +151,6 @@ public class MainActivity extends AppCompatActivity
                     listView.setAdapter(superTopicsAdapter);
                     listView.setDividerHeight(4);
                     mainLayout.setGravity(Gravity.NO_GRAVITY);
-
-                    final Menu menu = navigationView.getMenu();
-                    for(Topics topic:topicList) {
-                        menu.add("").setTitle(topic.getSuperTopicVal()).setEnabled(true);
-                    }
                 }
             }
         });
@@ -162,10 +159,8 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.layout_drawer);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            System.out.println("Drawer End");
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            System.out.println("Drawer End.");
             super.onBackPressed();
         }
     }
@@ -173,14 +168,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        System.out.println(id);
-        System.out.println(item.getTitle());
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.layout_drawer);
-        drawer.closeDrawer(GravityCompat.START);
+        System.out.println("Item Title:"+item.getTitle());
         return true;
     }
 

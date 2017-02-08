@@ -4,9 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,18 +31,22 @@ import org.sss.dquiz.helper.OnSwipeTouchListener;
 import org.sss.dquiz.model.Answers;
 import org.sss.dquiz.model.Contents;
 import org.sss.dquiz.model.Questions;
+import org.sss.dquiz.model.Topics;
+import org.sss.dquiz.model.User;
 import org.sss.dquiz.service.AnswerService;
 import org.sss.dquiz.service.ContentService;
 import org.sss.dquiz.service.QuestionService;
+import org.sss.dquiz.service.TopicService;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ContentActivity extends AppCompatActivity {
+public class ContentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     ContentService contentService = null;
     QuestionService questionService = null;
     AnswerService answerService = null;
-    SQLiteDatabase sqLiteDatabase = null;
+    SQLiteDatabase dbObject = null;
     String topicTitle = "";
     int topicId = 0,slideNumber = 1;
     Button submitAnswer = null;
@@ -44,6 +54,9 @@ public class ContentActivity extends AppCompatActivity {
     RadioGroup radioGroup = null;
     TextView contentType = null;
     SharedPreferences sharedPreferences = null;
+    NavigationView navigationView = null;
+    DrawerLayout layout_drawer = null;
+    TopicService topicService = null;
 
 
     @Override
@@ -55,40 +68,49 @@ public class ContentActivity extends AppCompatActivity {
         topicId = intent.getIntExtra("topicId",0);
         topicTitle = intent.getStringExtra("topicVal");
 
-        sqLiteDatabase = new DbObject(this.getApplicationContext()).getWritableDatabase();
+        dbObject = new DbObject(this.getApplicationContext()).getWritableDatabase();
         contentService = new ContentService();
         questionService = new QuestionService();
         answerService = new AnswerService();
+        topicService = new TopicService();
         sharedPreferences = getSharedPreferences(DquizConstants.MYPREFERENCES, Context.MODE_PRIVATE);
+        navigationDrawerSetUp();
 
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_content);
-        relativeLayout.setOnTouchListener(new OnSwipeTouchListener(ContentActivity.this){
+        layout_drawer.setOnTouchListener(new OnSwipeTouchListener(ContentActivity.this){
             public void onSwipeRight() {
                 slideNumber--;
                 if(slideNumber > 0) {
-                    fetchContentsOnUiThread();
+                    fetchContentsThread();
                 }
             }
             public void onSwipeLeft() {
                 if(contentType.getText().equals("question")){
                     if(checkTopicAndSlideNumber()){
                         slideNumber++;
-                        fetchContentsOnUiThread();
+                        fetchContentsThread();
                     }else{
                         HelperService.makeToast(ContentActivity.this,"Solve the question.", Toast.LENGTH_SHORT);
                     }
                 }
             }
         });
-        fetchContentsOnUiThread();
+        fetchContentsThread();
     }
 
-    public void fetchContentsOnUiThread(){
+    public void fetchContentsThread(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Contents contents = contentService.getContents(topicId, slideNumber, dbObject);
+                displayContentsOnUiThread(contents);
+            }
+        }).start();
+    }
+
+    public void displayContentsOnUiThread(final Contents contents){
         ContentActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
-                Contents contents = contentService.getContents(topicId, slideNumber, sqLiteDatabase);
                 TextView topicVal = (TextView) findViewById(R.id.topicVal);
                 TextView contentDescription = (TextView) findViewById(R.id.contentDescription);
                 contentType  = (TextView) findViewById(R.id.contentType);
@@ -119,10 +141,10 @@ public class ContentActivity extends AppCompatActivity {
     public void questionsContent(Contents contents){
 
         int questionId = Integer.valueOf(contents.getContentDescription());
-        Questions questions = questionService.getQuestion(questionId,sqLiteDatabase);
+        Questions questions = questionService.getQuestion(questionId,dbObject);
 
         if(questions != null){
-            final List<Answers> answersList = answerService.getAnswers(questionId,sqLiteDatabase);
+            final List<Answers> answersList = answerService.getAnswers(questionId,dbObject);
             final int answerSize = answersList.size();
 
             if(answerSize>0){
@@ -202,7 +224,7 @@ public class ContentActivity extends AppCompatActivity {
         if(correctAnswer.equalsIgnoreCase(selectedAnswer)){
             HelperService.makeAlertBox("Correct","Right Answer",ContentActivity.this);
             slideNumber++;
-            fetchContentsOnUiThread();
+            fetchContentsThread();
         }else{
             HelperService.makeAlertBox("Wrong","Wrong Answer",ContentActivity.this);
         }
@@ -225,5 +247,70 @@ public class ContentActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+
+    public void navigationDrawerSetUp(){
+        ContentActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+
+                layout_drawer = (DrawerLayout) findViewById(R.id.layout_drawer);
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                        ContentActivity.this, layout_drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                layout_drawer.setDrawerListener(toggle);
+                layout_drawer.requestLayout();
+                toggle.syncState();
+
+                navigationView = (NavigationView) findViewById(R.id.nav_view);
+                navigationView.setNavigationItemSelectedListener(ContentActivity.this);
+                navigationView.bringToFront();
+
+                ArrayList<Topics> superTopicList = topicService.getUniqueBySuperVal(dbObject);
+                if(superTopicList.size() >0) {
+                    final Menu menu = navigationView.getMenu();
+                    for (Topics topic : superTopicList) {
+                        menu.add(topic.getSuperTopicVal()).setTitle(topic.getSuperTopicVal()).setEnabled(true);
+                    }
+                }
+                displayUserProfile();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (layout_drawer.isDrawerOpen(GravityCompat.START)) {
+            layout_drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(final MenuItem item) {
+        layout_drawer.closeDrawer(GravityCompat.START);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(ContentActivity.this,TopicsActivity.class);
+                intent.putExtra("superTopicVal",item.getTitle()+"");
+                startActivity(intent);
+            }
+        }).start();
+    return true;
+}
+
+    public void displayUserProfile(){
+
+        View headerLayout = navigationView.getHeaderView(0);
+
+        TextView userName = (TextView) headerLayout.findViewById(R.id.userName);
+        userName.setText(sharedPreferences.getString(User.NAME,""));
+        TextView email = (TextView)headerLayout.findViewById(R.id.userEmail);
+        email.setText(sharedPreferences.getString(User.EMAIL,""));
     }
 }

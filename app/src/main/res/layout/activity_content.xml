@@ -1,63 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_content"
+    android:id="@+id/layout_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.sss.dquiz.activity.ContentActivity">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
-    <TextView
-        android:text="Topic Title"
+    <include
+        layout="@layout/app_bar_nav_draw"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/topicVal"
-        android:textColor="#000000"/>
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_nav_draw"
+        app:menu="@menu/nav_drawer" />
 
-    <ScrollView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/topicVal"
-        android:layout_centerHorizontal="true">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/questionLayout"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/common_google_signin_btn_text_dark_disabled"
-                    android:id="@+id/questionAgument"/>
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" tools:context="org.sss.dquiz.activity.ContentActivity">
 
+        <TextView
+            android:text="Topic Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/topicVal"
+            android:textColor="#000000"
+            android:layout_marginTop="70dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/topicVal"
+            android:layout_centerHorizontal="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/questionLayout"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/common_google_signin_btn_text_dark_disabled"
+                        android:id="@+id/questionAgument"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/questionVal"
+                        android:layout_below="@+id/questionAgument"
+                        android:text="Question"
+                        android:layout_marginBottom="20dp"/>
+                </LinearLayout>
                 <TextView
+                    android:text="Topic Description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/questionVal"
-                    android:layout_below="@+id/questionAgument"
-                    android:text="Question"
-                    android:layout_marginBottom="20dp"/>
-            </LinearLayout>
-            <TextView
-                android:text="Topic Description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/contentDescription"
-                android:textColor="#000000"
-                android:layout_below="@+id/questionLayout"/>
-        </RelativeLayout>
-    </ScrollView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/contentType"
-        android:visibility="invisible"/>
-</RelativeLayout>
+                    android:id="@+id/contentDescription"
+                    android:textColor="#000000"
+                    android:layout_below="@+id/questionLayout"/>
+            </RelativeLayout>
+        </ScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/contentType"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

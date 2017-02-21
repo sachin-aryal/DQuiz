@@ -15,7 +15,7 @@ public class Questions{
 
     int questionId;
     String questionVal;
-    String questionAugument;
+    String questionAugment;
     String hint;
     String difficulty;
 
@@ -35,12 +35,12 @@ public class Questions{
         this.questionVal = questionVal;
     }
 
-    public String getQuestionArgument() {
-        return questionAugument;
+    public String getQuestionAugment() {
+        return questionAugment;
     }
 
     public void setQuestionArgument(String questionAugument) {
-        this.questionAugument = questionAugument;
+        this.questionAugment = questionAugument;
     }
 
     public String getHint() {
@@ -62,7 +62,7 @@ public class Questions{
     public Questions(int questionId, String questionVal, String questionAugument, String hint, String difficulty) {
         this.questionId = questionId;
         this.questionVal = questionVal;
-        this.questionAugument = questionAugument;
+        this.questionAugment = questionAugument;
         this.hint = hint;
         this.difficulty = difficulty;
     }

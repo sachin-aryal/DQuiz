@@ -21,6 +21,7 @@ import org.sss.dquiz.Constants.DquizConstants;
 import org.sss.dquiz.R;
 import org.sss.dquiz.adapter.TopicsAdapter;
 import org.sss.dquiz.database.DbObject;
+import org.sss.dquiz.helper.HelperService;
 import org.sss.dquiz.model.Topics;
 import org.sss.dquiz.model.User;
 import org.sss.dquiz.service.TopicService;
@@ -114,6 +115,7 @@ public class TopicsActivity extends AppCompatActivity implements NavigationView.
                     }
                 }
                 displayUserProfile();
+                HelperService.closeDrag(layout_drawer);
             }
         });
     }

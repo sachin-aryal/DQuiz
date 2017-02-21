@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -20,6 +22,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import org.sss.dquiz.model.User;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by iam on 1/12/17.
@@ -138,6 +142,81 @@ public class HelperService {
         c.close();
     }
 
+
+    public static void closeDrag(DrawerLayout layout_drawer)
+    {
+        ViewDragHelper draggerObj = null;
+        Field mDragger = null;
+        Field mEdgeSize = null;
+        int edge = 0;
+        try
+        {
+            mDragger = layout_drawer.getClass().getDeclaredField("mLeftDragger");
+        }
+        catch (NoSuchFieldException e)
+        {
+            e.printStackTrace();
+        }
+
+        mDragger.setAccessible(true);
+
+        try
+        {
+            draggerObj = (ViewDragHelper) mDragger.get(layout_drawer);
+        }
+        catch (IllegalArgumentException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try
+        {
+            mEdgeSize = draggerObj.getClass().getDeclaredField("mEdgeSize");
+        }
+        catch (NoSuchFieldException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        mEdgeSize.setAccessible(true);
+
+        try
+        {
+            edge = mEdgeSize.getInt(draggerObj);
+        }
+        catch (IllegalArgumentException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try
+        {
+            mEdgeSize.setInt(draggerObj, edge * 0);
+        }
+        catch (IllegalArgumentException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 
 }

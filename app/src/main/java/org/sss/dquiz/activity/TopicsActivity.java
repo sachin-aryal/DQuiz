@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.sss.dquiz.Constants.DquizConstants;
 import org.sss.dquiz.R;
@@ -87,6 +89,17 @@ public class TopicsActivity extends AppCompatActivity implements NavigationView.
                 mainContext.startActivity(intent);
             }
         }).start();
+    }
+
+    public static void viewNotAllowedToast(){
+        new Handler().postDelayed(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mainContext, "Please complete previous Chapter!", Toast.LENGTH_SHORT).show();
+                    }
+                },1000
+        );
     }
 
     public void navigationDrawerSetUp(){

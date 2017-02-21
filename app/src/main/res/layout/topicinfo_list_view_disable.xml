@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/topicinfoList"
-    android:tag="active-list">
+    android:tag="inactive-list"
+    android:background="@android:color/darker_gray">
 
     <TextView
         android:layout_width="match_parent"

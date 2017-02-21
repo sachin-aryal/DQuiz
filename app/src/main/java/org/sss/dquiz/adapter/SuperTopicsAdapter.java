@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.sss.dquiz.R;
@@ -46,7 +47,9 @@ public class SuperTopicsAdapter extends ArrayAdapter<Topics> {
         }
 
         final Button button = (Button) convertView.findViewById(R.id.topicName);
-        button.setText(topics.getSuperTopicVal());
+        final TextView topicNameText = (TextView) convertView.findViewById(R.id.topicNameText);
+        button.setText(topics.getSuperTopicVal().charAt(0)+"");
+        topicNameText.setText(topics.getSuperTopicVal());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

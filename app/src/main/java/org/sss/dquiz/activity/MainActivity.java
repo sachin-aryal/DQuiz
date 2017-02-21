@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity
                     HelperService.makeAlertBox("No Data Received.", "No Data Received From Server. Restart App After Some Time.", MainActivity.this);
                 }else if(actionName.equalsIgnoreCase("showData")){
                     listView.setAdapter(superTopicsAdapter);
-                    listView.setDividerHeight(4);
+                    listView.setDividerHeight(7);
                     mainLayout.setGravity(Gravity.NO_GRAVITY);
                 }
             }
@@ -182,7 +182,6 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        System.out.println("Item Title:"+item.getTitle());
         return true;
     }
 

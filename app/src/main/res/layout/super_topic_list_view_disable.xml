@@ -6,10 +6,10 @@
     <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/round_button"
+        android:background="@drawable/grey_round_button"
         android:gravity="center_vertical|center_horizontal"
         android:textColor="#fff"
         android:id="@+id/topicName"
-        android:tag="active-list"/>
+        android:tag="inactive-list"/>
 
 </RelativeLayout>

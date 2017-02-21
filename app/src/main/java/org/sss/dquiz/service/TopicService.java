@@ -1,7 +1,10 @@
 package org.sss.dquiz.service;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +14,7 @@ import org.sss.dquiz.model.Topics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by iam on 1/24/17.
@@ -60,7 +64,25 @@ public class TopicService {
         return topicList;
     }
 
-
+    public int getCurrentTopic(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        int topicId = prefs.getInt("topicId",100101000);
+        //int slideNo = prefs.getInt("slideNo",1);
+        /*System.out.println("--------------topicID"+topicId);
+        String currentTopicQuery = "SELECT "+Topics.SUPER_TOPIC_VAL+" FROM "+ Topics.TOPIC_TABLE+" WHERE "+Topics.TOPIC_ID
+                +"="+topicId;
+        System.out.println("currentTopicquery-------"+currentTopicQuery);
+        Cursor cursor = sqLiteDatabase.rawQuery(currentTopicQuery, null);
+        String currentTopicVal = "";
+        if (cursor !=null){
+            if (cursor.moveToFirst()){
+                currentTopicVal=cursor.getString(cursor.getColumnIndex(Topics.SUPER_TOPIC_VAL));
+            }
+            cursor.close();
+        }*/
+        //return currentTopicVal;
+        return topicId;
+    }
     public static void insertTopics(JSONArray contents,SQLiteDatabase sqLiteDatabase) throws JSONException {
         //System.out.println("contents length ----"+contents.length());
         for (int i = 0; i < contents.length(); i++) {

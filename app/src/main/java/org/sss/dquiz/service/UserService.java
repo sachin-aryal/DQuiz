@@ -46,6 +46,15 @@ public class UserService {
                         TopicService.insertTopics(topics, sqLiteDatabase);
                         registerResult.remove("success");
                         registerResult.remove("allTopics");
+
+                        JSONObject userStatus = (JSONObject) registerResult.get("userStatus");
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean(DquizConstants.ISREGISTER, true);
+                        editor.putInt("slideNo",userStatus.getInt("slideNo"));
+                        editor.putInt("topicId",userStatus.getInt("topicId"));
+                        editor.apply();
+
                         Iterator<String> iter = registerResult.keys();
                         while (iter.hasNext()) {
                             String key = iter.next();
@@ -54,23 +63,30 @@ public class UserService {
                                 Iterator<String> topicIds = insideValue.keys();
                                 while (topicIds.hasNext()) {
                                     String topicId = topicIds.next();
-                                    JSONObject allData = (JSONObject) insideValue.get(topicId);
-
-                                    JSONArray contents = (JSONArray) allData.get("contents");
-                                    ContentService.insertContent(contents, sqLiteDatabase);
-                                    JSONArray questions = (JSONArray) allData.get("questions");
-                                    QuestionService.insertQuestion(questions, sqLiteDatabase);
-                                    JSONObject answers = (JSONObject) allData.get("answers");
-                                    AnswerService.insertAnswers(answers, sqLiteDatabase);
-
-                                    JSONObject userStatus = (JSONObject) allData.get("userStatus");
-
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putBoolean(DquizConstants.ISREGISTER, true);
-                                    editor.putInt("slideNo",userStatus.getInt("slideNo"));
-                                    editor.putInt("topicId",userStatus.getInt("topicId"));
-                                    editor.apply();
-                                    System.out.println("Successfully Registered......");
+                                    JSONObject allData = null;
+                                    try {
+                                        allData = (JSONObject) insideValue.get(topicId);
+                                    }catch (Exception ex){
+                                        System.out.println("No Data Found.");
+                                    }
+                                    try {
+                                        JSONArray contents = (JSONArray) allData.get("contents");
+                                        ContentService.insertContent(contents, sqLiteDatabase);
+                                    }catch (Exception ex){
+                                        System.out.println("No Contents Data.");
+                                    }
+                                    try {
+                                        JSONArray questions = (JSONArray) allData.get("questions");
+                                        QuestionService.insertQuestion(questions, sqLiteDatabase);
+                                    }catch (Exception ex){
+                                        System.out.println("No Question Data.");
+                                    }
+                                    try {
+                                        JSONObject answers = (JSONObject) allData.get("answers");
+                                        AnswerService.insertAnswers(answers, sqLiteDatabase);
+                                    }catch (Exception ex){
+                                        System.out.println("No Answer Data.");
+                                    }
                                 }
                             } catch (JSONException e) {
                                 System.out.println("Error Occurred" + e.getMessage());

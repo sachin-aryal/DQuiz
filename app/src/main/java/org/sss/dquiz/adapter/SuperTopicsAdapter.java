@@ -33,10 +33,8 @@ public class SuperTopicsAdapter extends ArrayAdapter<Topics> {
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         final Topics topics = getItem(position);
         int currentTopicId = new TopicService().getCurrentTopic(getContext());
-        System.out.println("-----------currentTopicList = " + currentTopicId);
-        System.out.println("-------------topicId = " + topics.getTopicId());
-        System.out.println("compare--------------"+(currentTopicId==topics.getTopicId()));
-        if (currentTopicId<=topics.getTopicId()){
+
+        if (currentTopicId >= topics.getTopicId()){
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.super_topic_list_view, parent, false);
             }
@@ -53,7 +51,6 @@ public class SuperTopicsAdapter extends ArrayAdapter<Topics> {
             @Override
             public void onClick(View view) {
                 String tag = view.getTag().toString();
-                System.out.println("---------------tag = " + tag);
                 if (tag.equals("active-list")){
                     MainActivity.viewDescription(topics.getSuperTopicVal());
                 }

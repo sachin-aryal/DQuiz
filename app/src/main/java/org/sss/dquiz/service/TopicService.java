@@ -45,8 +45,8 @@ public class TopicService {
     }
 
     public ArrayList<Topics> getUniqueBySuperVal(SQLiteDatabase sqLiteDatabase){
-        String topicQuery = "SELECT distinct "+Topics.SUPER_TOPIC_VAL+" FROM "+Topics.TOPIC_TABLE
-                +" ORDER BY "+Topics.TOPIC_ID+" ASC";
+        String topicQuery = "SELECT "+Topics.SUPER_TOPIC_VAL+",MIN("+Topics.TOPIC_ID+") FROM "+Topics.TOPIC_TABLE
+                +" GROUP BY "+Topics.SUPER_TOPIC_VAL+" ORDER BY "+Topics.TOPIC_ID+" ASC";
         System.out.println(topicQuery);
         Cursor cursor = sqLiteDatabase.rawQuery(topicQuery, null);
 
@@ -54,8 +54,9 @@ public class TopicService {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
+                    int topicId = cursor.getInt(1);
                     String superTopicVal = cursor.getString(cursor.getColumnIndex(Topics.SUPER_TOPIC_VAL));
-                    Topics topics = new Topics(0, null, superTopicVal, null);
+                    Topics topics = new Topics(topicId, null, superTopicVal, null);
                     topicList.add(topics);
                 } while (cursor.moveToNext());
             }

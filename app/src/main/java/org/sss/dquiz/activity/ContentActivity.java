@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -57,6 +58,7 @@ public class ContentActivity extends AppCompatActivity implements NavigationView
     NavigationView navigationView = null;
     DrawerLayout layout_drawer = null;
     TopicService topicService = null;
+    ImageView questionAugment = null;
 
 
     @Override
@@ -112,6 +114,7 @@ public class ContentActivity extends AppCompatActivity implements NavigationView
             @Override
             public void run() {
                 TextView topicVal = (TextView) findViewById(R.id.topicVal);
+                questionAugment = (ImageView) findViewById(R.id.questionAugment);
                 TextView contentDescription = (TextView) findViewById(R.id.contentDescription);
                 contentType  = (TextView) findViewById(R.id.contentType);
                 LinearLayout questionsLayout = (LinearLayout) findViewById(R.id.questionLayout);
@@ -146,7 +149,9 @@ public class ContentActivity extends AppCompatActivity implements NavigationView
         if(questions != null){
             final List<Answers> answersList = answerService.getAnswers(questionId,dbObject);
             final int answerSize = answersList.size();
-
+            if(questions.getQuestionAugment().equals("--")){
+                questionAugment.setVisibility(View.GONE);
+            }
             if(answerSize>0){
                 TextView questionVal = (TextView) findViewById(R.id.questionVal);
                 questionVal.setText("Question. "+questions.getQuestionVal());
@@ -276,6 +281,7 @@ public class ContentActivity extends AppCompatActivity implements NavigationView
                     }
                 }
                 displayUserProfile();
+                HelperService.closeDrag(layout_drawer);
             }
         });
     }

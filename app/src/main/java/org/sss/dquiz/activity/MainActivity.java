@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import org.sss.dquiz.model.Topics;
 import org.sss.dquiz.model.User;
 import org.sss.dquiz.service.TopicService;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
@@ -126,10 +128,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.layout_drawer);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, layout_drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        layout_drawer.setDrawerListener(toggle);
         layout_drawer.requestLayout();
         toggle.syncState();
 
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.bringToFront();
         displayUserProfile();
+        HelperService.closeDrag(layout_drawer);
     }
 
     public void runOnUiThread(final String actionName, final SuperTopicsAdapter superTopicsAdapter){
@@ -157,9 +159,8 @@ public class MainActivity extends AppCompatActivity
     }
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.layout_drawer);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (layout_drawer.isDrawerOpen(GravityCompat.START)) {
+            layout_drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }

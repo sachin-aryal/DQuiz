@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity
                     public void run() {
                         Toast.makeText(mainContext, "Please complete previous Topic!", Toast.LENGTH_SHORT).show();
                     }
-                },2000
+                },1000
         );
     }
 
